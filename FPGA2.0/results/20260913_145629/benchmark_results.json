@@ -1,0 +1,130 @@
+{
+  "notice": "Windows local validation only; not a PYNQ PL performance result.",
+  "environment": {
+    "platform": "Windows-11-10.0.26100-SP0",
+    "python": "3.12.10",
+    "opencv": "5.0.0",
+    "numpy": "2.5.3",
+    "psutil": "7.2.2",
+    "logical_cpus": 24,
+    "opencv_threads": 24
+  },
+  "config": {
+    "source": "synthetic",
+    "width": 320,
+    "height": 240,
+    "warmup_frames": 20,
+    "measure_frames": 200,
+    "repeats": 3
+  },
+  "runs": [
+    {
+      "backend": "opencv",
+      "frames": 200,
+      "wall_seconds": 0.03136690001701936,
+      "fps": 6376.148101708553,
+      "latency_mean_ms": 0.15465600037714466,
+      "latency_p50_ms": 0.1510500005679205,
+      "latency_p95_ms": 0.18268499261466775,
+      "process_cpu_one_core_percent": 99.62731408919615,
+      "process_cpu_total_capacity_percent": 4.15113808704984,
+      "system_cpu_percent": 28.846153846153847,
+      "repeat": 1
+    },
+    {
+      "backend": "hls_gray_reference",
+      "frames": 200,
+      "wall_seconds": 0.07932659998186864,
+      "fps": 2521.222390039573,
+      "latency_mean_ms": 0.3942124993773177,
+      "latency_p50_ms": 0.384899991331622,
+      "latency_p95_ms": 0.5195499921683219,
+      "process_cpu_one_core_percent": 98.48524961092082,
+      "process_cpu_total_capacity_percent": 4.103552067121701,
+      "system_cpu_percent": 31.40495867768595,
+      "repeat": 1
+    },
+    {
+      "backend": "hls_gray_reference",
+      "frames": 200,
+      "wall_seconds": 0.0727511000004597,
+      "fps": 2749.099326315839,
+      "latency_mean_ms": 0.36351399976410903,
+      "latency_p50_ms": 0.3473499964457005,
+      "latency_p95_ms": 0.46204999671317637,
+      "process_cpu_one_core_percent": 107.38669243421246,
+      "process_cpu_total_capacity_percent": 4.474445518092186,
+      "system_cpu_percent": 16.363636363636363,
+      "repeat": 2
+    },
+    {
+      "backend": "opencv",
+      "frames": 200,
+      "wall_seconds": 0.025955299992347136,
+      "fps": 7705.555322379998,
+      "latency_mean_ms": 0.12957700018887408,
+      "latency_p50_ms": 0.1154000055976212,
+      "latency_p95_ms": 0.1865250189439392,
+      "process_cpu_one_core_percent": 120.39930191218747,
+      "process_cpu_total_capacity_percent": 5.0166375796744775,
+      "system_cpu_percent": 28.205128205128204,
+      "repeat": 2
+    },
+    {
+      "backend": "opencv",
+      "frames": 200,
+      "wall_seconds": 0.029188500018790364,
+      "fps": 6852.013631096088,
+      "latency_mean_ms": 0.14569949998985976,
+      "latency_p50_ms": 0.12119999155402184,
+      "latency_p95_ms": 0.23942501284182047,
+      "process_cpu_one_core_percent": 107.06271298587637,
+      "process_cpu_total_capacity_percent": 4.460946374411516,
+      "system_cpu_percent": 25.0,
+      "repeat": 3
+    },
+    {
+      "backend": "hls_gray_reference",
+      "frames": 200,
+      "wall_seconds": 0.07338409998919815,
+      "fps": 2725.3860172631294,
+      "latency_mean_ms": 0.3666859988879878,
+      "latency_p50_ms": 0.3561999910743907,
+      "latency_p95_ms": 0.43374500965001045,
+      "process_cpu_one_core_percent": 106.460391299341,
+      "process_cpu_total_capacity_percent": 4.435849637472542,
+      "system_cpu_percent": 29.838709677419356,
+      "repeat": 3
+    }
+  ],
+  "summaries": {
+    "opencv": {
+      "runs": 3,
+      "fps_mean": 6977.905685061546,
+      "fps_stdev": 673.5855524965446,
+      "latency_p50_ms_mean": 0.12921666590652117,
+      "latency_p95_ms_mean": 0.20287834146680914,
+      "process_cpu_one_core_percent_mean": 109.02977632908666,
+      "process_cpu_total_capacity_percent_mean": 4.542907347045278,
+      "system_cpu_percent_mean": 27.35042735042735
+    },
+    "hls_gray_reference": {
+      "runs": 3,
+      "fps_mean": 2665.2359112061804,
+      "fps_stdev": 125.28168647356644,
+      "latency_p50_ms_mean": 0.36281665961723775,
+      "latency_p95_ms_mean": 0.4717816661771696,
+      "process_cpu_one_core_percent_mean": 104.11077778149142,
+      "process_cpu_total_capacity_percent_mean": 4.33794907422881,
+      "system_cpu_percent_mean": 25.86910157291389
+    }
+  },
+  "agreement": {
+    "frames": 200,
+    "mask_pixel_agreement": 1.0,
+    "mask_mean_iou": 1.0,
+    "target_count_agreement": 1.0,
+    "bbox_mean_matched_iou": 1.0,
+    "alarm_agreement": 1.0
+  }
+}

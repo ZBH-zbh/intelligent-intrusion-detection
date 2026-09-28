@@ -1,0 +1,69 @@
+{
+  "notice": "Uses the currently loaded overlay; this script does not download a bitstream.",
+  "warmup_frames": 20,
+  "measured_frames": 200,
+  "buffer_mode": "uncached_cached_pack",
+  "fps_from_mean_latency": 32.44888937429417,
+  "stages": {
+    "pack_rgb32": {
+      "mean_ms": 9.560298710002826,
+      "p50_ms": 9.548834000042916,
+      "p95_ms": 9.63757970006327,
+      "percent_of_frame": 31.022107522608895
+    },
+    "start_hls_ips": {
+      "mean_ms": 0.147401525002806,
+      "p50_ms": 0.1448890000119718,
+      "p95_ms": 0.1534199500952127,
+      "percent_of_frame": 0.4783015778418308
+    },
+    "input_flush": {
+      "mean_ms": 0.27356305499893097,
+      "p50_ms": 0.2708184999846708,
+      "p95_ms": 0.27742010003066747,
+      "percent_of_frame": 0.8876817308554262
+    },
+    "dma_registers": {
+      "mean_ms": 0.1559956799962947,
+      "p50_ms": 0.1520339999387943,
+      "p95_ms": 0.16232400007538672,
+      "percent_of_frame": 0.5061886563067561
+    },
+    "dma_wait": {
+      "mean_ms": 1.2800033349992646,
+      "p50_ms": 1.2788005000174962,
+      "p95_ms": 1.2946286999522272,
+      "percent_of_frame": 4.153468661611873
+    },
+    "output_invalidate": {
+      "mean_ms": 0.16531178000150248,
+      "p50_ms": 0.16185800006951467,
+      "p95_ms": 0.17492744987066544,
+      "percent_of_frame": 0.5364183661536409
+    },
+    "extract_mask": {
+      "mean_ms": 5.127750320004907,
+      "p50_ms": 5.139151000093989,
+      "p95_ms": 5.17755864988203,
+      "percent_of_frame": 16.638980287284074
+    },
+    "morphology": {
+      "mean_ms": 12.161857405005776,
+      "p50_ms": 12.1401200000264,
+      "p95_ms": 12.232139150091825,
+      "percent_of_frame": 39.463876552097275
+    },
+    "contours_alarm": {
+      "mean_ms": 1.9416395399798603,
+      "p50_ms": 1.933415499934199,
+      "p95_ms": 2.0584060998203313,
+      "percent_of_frame": 6.300404663756191
+    },
+    "frame_total": {
+      "mean_ms": 30.817695744995035,
+      "p50_ms": 30.778651999980866,
+      "p95_ms": 31.067931349980427,
+      "percent_of_frame": 100.0
+    }
+  }
+}

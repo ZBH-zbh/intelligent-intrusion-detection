@@ -1,0 +1,10 @@
+metric,baseline,optimized,change,conclusion
+Slice LUTs,3956,3725,-231 (-5.84%),improved
+Slice Registers,5143,4695,-448 (-8.71%),improved
+Block RAM Tile,27,27,0,unchanged
+DSP Blocks,16,3,-13 (-81.25%),improved
+WNS (ns),0.611,0.225,-0.386,both pass at 100 MHz
+WHS (ns),0.031,0.031,0,both pass
+DRC total violations,24,6,-18,no Error or Critical in optimized design
+Routable nets fully routed,8528/8528,7526/7526,,pass
+Bitstream generated,yes (captain baseline),yes (separate optimized artifact),,optimized artifact not board-tested
