@@ -59,10 +59,8 @@ USB 摄像头 (罗技 C270i)
 │   ├── pl/pl/hls            # 基线 HLS 源码
 │   ├── pl/pl/hls_optimized  # 优化版 HLS 源码（固定 320×240，DSP 大幅减少）
 │   ├── pl/pl/vivado         # Vivado 工程与 IP 仓库
-│   ├── optimized_overlay/   # 基线部署 bitstream + hwh（PL 仅做前级预处理）
-│   ├── v2_overlay/          # **PL v2**：形态学（7×7 close + 3×3 open）全上 PL
+│   ├── optimized_overlay/   # 基线部署 bitstream + hwh（PL 帧差预处理）
 │   ├── pynq_deploy/         # 上板最小部署集（Python + bit/hwh）
-│   ├── v2_deploy/           # PL v2 对应部署脚本
 │   ├── new_features/        # 跟踪、越线、Web 配置、录制回放
 │   ├── tests/               # Python 单元测试
 │   └── *.md 报告与说明      # HLS/Vivado/性能对比报告
@@ -90,40 +88,6 @@ scp FPGA2.0/optimized_overlay/intrusion_detection_optimized.bit \
 ```
 
 > 若使用队友 B 的跟踪/Web 功能，需要同时上传 `FPGA2.0/new_features/` 中的相关模块。
-
-### 4.4 PL v2 部署（形态学全上 PL，推荐用于比赛答辩）
-
-把 `v2_overlay/` 和 `v2_deploy/` 里的文件传到 PYNQ：
-
-```bash
-scp FPGA2.0/v2_overlay/intrusion_detection_v2.bit \
-   FPGA2.0/v2_overlay/intrusion_detection_v2.hwh \
-   FPGA2.0/v2_deploy/*.py \
-   FPGA2.0/motion_common.py \
-   FPGA2.0/opencv_software_motion.py \
-   FPGA2.0/benchmark_motion.py \
-   xilinx@192.168.137.125:/home/xilinx/intrusion_demo_v2/
-```
-
-运行 PL v2 对比测试：
-
-```bash
-cd /home/xilinx/intrusion_demo_v2
-echo xilinx | sudo -S env XILINX_XRT=/usr /usr/local/share/pynq-venv/bin/python3 pynq_compare_motion_v2.py \
-  --bitstream ./intrusion_detection_v2.bit \
-  --source synthetic \
-  --warmup 20 --frames 200 --repeats 3 --min-seconds 5 \
-  --opencv-threads 1 --dma-poll-sleep-us 100 \
-  --output-root ./pynq_results_v2
-```
-
-实时演示：
-
-```python
-%run /home/xilinx/intrusion_demo_v2/pl_motion_detection_v2.py
-```
-
-详细说明见 [`FPGA2.0/v2_overlay/README.md`](FPGA2.0/v2_overlay/README.md)。
 
 ### 4.2 运行实时演示
 
@@ -186,7 +150,7 @@ python3 pynq_compare_motion.py \
 | 掩码平均 IoU | - | 0.0265 | PL 使用右下锚点，OpenCV 使用中心锚点，边缘存在位置偏移；以报警一致率为主要验收指标 |
 
 > 实测环境：PYNQ-Z2，合成 320×240 序列，200 帧 × 3 轮，2026-09-15。
-> 完整原始结果位于板上 `/home/xilinx/intrusion_demo_v2/pynq_results_v2/20260915_120337/`。
+> PL v2 工程文件已从仓库移除，上表数据保留备查。
 
 完整报告见 `FPGA2.0/性能对比报告.md`。
 
@@ -249,13 +213,7 @@ PS: 取低 8 位 mask → 轮廓/合框/报警/跟踪/越线/Web
 | `morphology_ex_3` | `0x40070000` | op=1, kernel=3（dilate） |
 | AXI DMA | `0x41E00000` | DMA 控制 |
 
-### 7.4 文件位置
-
-- bitstream / hwh：`FPGA2.0/v2_overlay/`
-- 部署脚本：`FPGA2.0/v2_deploy/`
-- 上板运行命令：见上文 **4.4 PL v2 部署**。
-
-### 7.5 板上 latency 分解（PL v2）
+### 7.4 板上 latency 分解（PL v2）
 
 实测环境：PYNQ-Z2，320×240，200 帧，DMA poll sleep 100 µs，结果文件 `profile_results_v2.json`。
 
@@ -284,15 +242,6 @@ SHA256 (intrusion_detection_optimized.bit) =
   78e325fcb43c73fe2c45fbe6f0c21a86dcb2db1acc8a50384810f9c954771ee4
 SHA256 (intrusion_detection_optimized.hwh) =
   7e5b68b2906ab9995801db006d94fa067833a727075d2588dd689c64a64be716
-```
-
-PL v2 overlay（形态学全上 PL）：
-
-```text
-SHA256 (intrusion_detection_v2.bit) =
-  7a9bbf08ba8b47d8c88bfa31e7774bd921ffad8363113b52ac042e4fb20d01a7
-SHA256 (intrusion_detection_v2.hwh) =
-  7cad032bf51c358cd46c32c34623989249f5e7df62eaef1b4639d4bacdb4d03f
 ```
 
 ---

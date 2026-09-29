@@ -14,27 +14,7 @@ PS: 轮廓、面积过滤、合框、警戒区、蜂鸣器
 
 优化 HLS、独立 IP 仓库、Vivado 工程和 bit/hwh 均已生成并完成上板回归。实现后 LUT 减少 5.84%、寄存器减少 8.71%、DSP 减少 81.25%，100 MHz 时序通过。PYNQ 正式对比中，OpenCV 为 48.40 FPS，优化 PL 为 50.18 FPS（1.04×），PL 单核 CPU 为 96.25%，低于 OpenCV 的 99.98%；五项效果一致性全部通过。摄像头、目标框、报警和 G1 蜂鸣器联动均已验证。
 
-## 2. PL v2 升级（形态学全上 PL）
-
-基线方案的最大瓶颈是 **PS 端形态学后处理约 12 ms/帧**。为回应“FPGA 必要性/加速比”的质疑，已将 `7×7 闭运算 + 3×3 开运算` 搬上 PL：
-
-```text
-rgb2gray → frame_diff → threshold
-    → dilate 7×7 → erode 7×7 → erode 3×3 → dilate 3×3
-```
-
-对应文件：
-
-- `v2_overlay/intrusion_detection_v2.bit`
-- `v2_overlay/intrusion_detection_v2.hwh`
-- `v2_deploy/pl_motion_detection_v2.py`
-- `v2_deploy/pynq_compare_motion_v2.py`
-
-实测指标（2026-09-15，PYNQ-Z2，合成 320×240，200 帧 × 3 轮）：PL v2 **138.07 FPS**，相对 OpenCV 的 **2.85× 加速**，报警一致率 **94.00%**。单核 CPU 从 99.98% 降至 **93.71%**，未达 75% 的原定目标，说明 PS 端轮廓/合框/报警/跟踪逻辑仍是主要 CPU 消耗点。
-
-详细命令见 `v2_overlay/README.md`。
-
-## 3. 固定接口
+## 2. 固定接口
 
 - 器件：PYNQ-Z2，`xc7z020clg400-1`
 - 分辨率：320×240
@@ -49,16 +29,16 @@ rgb2gray → frame_diff → threshold
 
 板端代码继续使用直接 MMIO，不依赖 `ip_dict`。
 
-## 4. 运行环境分工
+## 3. 运行环境分工
 
 | 环境 | 用途 |
 |---|---|
 | Windows 本地 | Python 自动测试、OpenCV 算法验证、本地参考基准、HLS/Vivado 构建 |
 | PYNQ PS ARM | 正式 OpenCV vs 真实 PL 性能/一致性对比、摄像头和蜂鸣器验收 |
 
-正式性能对比必须在 PYNQ PS 上进行。Windows 数据只能证明软件和流程可运行，不能代表 PL 加速效果。
+正式性能对比必须在 PYNQ PS 上进行。Windows 数据只能证明软件和统计流程可运行，不能代表 PL 加速效果。
 
-## 5. 主要交付物
+## 4. 主要交付物
 
 | 交付物 | 路径 |
 |---|---|
@@ -69,8 +49,6 @@ rgb2gray → frame_diff → threshold
 | PYNQ 正式对比工具 | `D:\FPGA2.0\pynq_compare_motion.py` |
 | PYNQ 分阶段诊断工具 | `D:\FPGA2.0\pynq_profile_motion.py` |
 | 优化 bit/hwh | `D:\FPGA2.0\optimized_overlay` |
-| PL v2 bit/hwh | `D:\FPGA2.0\v2_overlay` |
-| PL v2 部署脚本 | `D:\FPGA2.0\v2_deploy` |
 | 优化 HLS 源码 | `D:\FPGA2.0\pl\pl\hls_optimized` |
 | 优化 Vivado 工程 | `D:\FPGA2.0\pl\pl\vivado\project_1intrusion_detection_optimized` |
 | 优化建议 | `D:\FPGA2.0\优化建议清单.md` |
@@ -81,7 +59,7 @@ rgb2gray → frame_diff → threshold
 | 最终 PYNQ 原始结果 | `D:\FPGA2.0\results\pynq_final_20260914_081017` |
 | 上板步骤 | `D:\FPGA2.0\PYNQ上板测试清单.md` |
 
-## 6. Windows 验证
+## 5. Windows 验证
 
 ```powershell
 D:\FPGA2.0\.venv\Scripts\python.exe D:\FPGA2.0\opencv_software_motion.py --self-test
@@ -93,7 +71,7 @@ D:\FPGA2.0\.venv\Scripts\python.exe D:\FPGA2.0\benchmark_motion.py --source synt
 
 `D:\FPGA2.0\results\20260913_145855`
 
-## 7. PYNQ 正式对比复现
+## 6. PYNQ 正式对比复现
 
 加载 overlay 前先获得上板确认。把 bit/hwh 和 Python 文件放到同一工作目录，然后执行无显示、无摄像头、无蜂鸣器的固定帧测试：
 
@@ -108,7 +86,7 @@ python3 pynq_compare_motion.py \
 
 该命令会实际下载 bitstream。详细前置检查和故障处理见 `PYNQ上板测试清单.md`。
 
-## 8. 已验证与边界
+## 7. 已验证与边界
 
 已验证：HLS CSim/综合/IP 导出，Vivado Validate Design/综合/布局布线/物理优化/Bitgen，Windows 自动测试 12/12，PYNQ 环境和 OpenCV 自测，真实 overlay/DMA，正式 FPS/CPU/一致性，以及摄像头和蜂鸣器联动。
 
