@@ -255,6 +255,24 @@ PS: 取低 8 位 mask → 轮廓/合框/报警/跟踪/越线/Web
 - 部署脚本：`FPGA2.0/v2_deploy/`
 - 上板运行命令：见上文 **4.4 PL v2 部署**。
 
+### 7.5 板上 latency 分解（PL v2）
+
+实测环境：PYNQ-Z2，320×240，200 帧，DMA poll sleep 100 µs，结果文件 `profile_results_v2.json`。
+
+| 阶段 | 平均耗时 / ms | 占整帧 |
+|---|---|---|
+| pack_rgb32 | 1.70 | 23.6% |
+| start_hls_ips | 0.19 | 2.7% |
+| input_flush | 0.25 | 3.4% |
+| dma_registers | 0.16 | 2.2% |
+| dma_wait | 0.91 | 12.7% |
+| output_invalidate | 0.79 | 11.0% |
+| extract_mask | 1.14 | 15.8% |
+| contours_alarm | 2.06 | 28.7% |
+| **frame_total** | **7.20** | **100.0%** |
+
+> 形态学搬上 PL 后，**PS 端轮廓/合框/报警** 成为最大单阶段开销，也是后续继续优化的方向。
+
 ---
 
 ## 8. 主要交付文件校验
